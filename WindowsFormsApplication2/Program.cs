@@ -8,28 +8,29 @@ namespace SimonSays
 {
     static class Program
     {
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         //[STAThread]
         static void Main()
         {
-
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new StartForm());
-
-            new Game().start();
-            int var1 = Console.Read();
-            Console.Read();
-            Console.Read();
-            Console.WriteLine((char)var1);
-            Console.WriteLine("Before first readline");
-            Console.ReadLine();
-            Console.WriteLine("After first readline");
-            Console.ReadLine();
-            Console.WriteLine("After second readline");
-
+            Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new StartForm());
+        }
+        static void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            try
+            {
+                Corale.Colore.Core.Keyboard.Instance.Clear();
+                Corale.Colore.Core.Keyboard.Instance.SetEffect(Corale.Colore.Razer.Keyboard.Effects.Effect.SpectrumCycling);
+            }
+            catch
+            {
+                // Again catch all SDK errors just for kicks.
+            }
         }
     }
 }
