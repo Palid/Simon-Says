@@ -19,6 +19,7 @@ namespace SimonSays
         private Random random = new Random();
         private Timer keyboardAnimationTimer = new Timer();
         private Timer votingAnimationTimer = new Timer();
+        private Timer failAnimationTimer = new Timer();
         private AnimatedKey currentKey;
         private IKeyboard keyboard = Keyboard.Instance;
         private int animationFramesCount = 0;
@@ -35,16 +36,32 @@ namespace SimonSays
         readonly int animationCount = 30; //Great shadowing animation for key.
         readonly bool DEBUG = true;
 
+        int redPos = 0;
+        int bluePos = 1;
+        int pinkPos = 2;
+        int redPos2 = 3;
+        Color failOne = new Color(System.Drawing.Color.Red);
+        Color failTwo = new Color(System.Drawing.Color.OrangeRed);
+        Color failThree = new Color(System.Drawing.Color.MediumVioletRed);
+
         public Game(Color keysColor)
         {
             init();
             this.keysColor = keysColor;
         }
 
+        public Game(System.Drawing.Color keysColor)
+        {
+            init();
+            this.keysColor = new Color(keysColor);
+        }
+
         private void init()
         {
             keyboardAnimationTimer.Interval = 80;
             keyboardAnimationTimer.Elapsed += animationFrame;
+            failAnimationTimer.Interval = 125;
+            failAnimationTimer.Elapsed += failAnimationFrame;
             votingAnimationTimer.Interval = 100;
             votingAnimationTimer.Elapsed += (sender, args) =>
             {
@@ -101,9 +118,24 @@ namespace SimonSays
 
         }
 
+        private void stopAnimations()
+        {
+            keyboardAnimationTimer.Stop();
+            failAnimationTimer.Stop();
+            votingAnimationTimer.Stop();
+        }
+
         private UsableKeys getRandomKey()
         {
             return usableKeysValues[random.Next(0, usableKeysValues.Length)];
+        }
+
+        public void showFailure()
+        {
+            stopAnimations();
+            failAnimationTimer.Start();
+            isFinished = true;
+            isVotingTime = false;
         }
 
         public bool verifyPushedButton(char key)
@@ -123,11 +155,45 @@ namespace SimonSays
                 }
             } else
             {
-                isFinished = true;
-                isVotingTime = false;
-                keyboard.SetAll(Color.Red);
+                showFailure();
             }
             return isSame;
+        }
+
+        private void failAnimationFrame(Object source, ElapsedEventArgs e)
+        {
+            var tempRed = redPos;
+            var tempBlue = bluePos;
+            var tempPink = pinkPos;
+            var tempRed2 = redPos2;
+            redPos = tempBlue;
+            bluePos = tempPink;
+            pinkPos = tempRed2;
+            redPos2 = tempRed;
+            var arr = new Color[Constants.MaxRows][];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = new Color[Constants.MaxColumns];
+                for (int y = 0; y < Constants.MaxColumns; y++)
+                {
+                    var modulo = y % 4;
+                    if (modulo == pinkPos)
+                    {
+                        arr[i][y] = failOne;
+                    }
+                    else if (modulo == redPos || modulo == redPos2)
+                    {
+                        arr[i][y] = failTwo;
+
+                    }
+                    else if (modulo == bluePos)
+                    {
+                        arr[i][y] = failThree;
+
+                    }
+                }
+            }
+            keyboard.SetGrid(arr);
         }
 
         private void animationFrame(Object source, ElapsedEventArgs e)

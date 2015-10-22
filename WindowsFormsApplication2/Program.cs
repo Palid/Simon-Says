@@ -25,7 +25,6 @@ namespace SimonSays
             try
             {
                 Corale.Colore.Core.Keyboard.Instance.Clear();
-                Corale.Colore.Core.Keyboard.Instance.SetEffect(Corale.Colore.Razer.Keyboard.Effects.Effect.SpectrumCycling);
             }
             catch
             {

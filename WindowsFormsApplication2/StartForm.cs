@@ -103,5 +103,11 @@ namespace SimonSays
             var currentItem = colorsListBox.SelectedItem;
             selectedColor = updateFormColor(currentItem.ToString());
         }
+
+        private void showFailButton_Click(object sender, EventArgs e)
+        {
+            game = new Game(Corale.Colore.Core.Color.Pink);
+            game.showFailure();
+        }
     }
 }

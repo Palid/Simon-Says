@@ -31,6 +31,7 @@
             this.startGame = new System.Windows.Forms.Button();
             this.restartGame = new System.Windows.Forms.Button();
             this.colorsListBox = new System.Windows.Forms.ListBox();
+            this.showFailButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // startGame
@@ -74,9 +75,20 @@
             this.colorsListBox.TabIndex = 2;
             this.colorsListBox.SelectedIndexChanged += new System.EventHandler(this.colorsListBox_SelectedIndexChanged);
             // 
+            // showFailButton
+            // 
+            this.showFailButton.Location = new System.Drawing.Point(197, 158);
+            this.showFailButton.Name = "showFailButton";
+            this.showFailButton.Size = new System.Drawing.Size(75, 23);
+            this.showFailButton.TabIndex = 3;
+            this.showFailButton.Text = "Show Fail";
+            this.showFailButton.UseVisualStyleBackColor = true;
+            this.showFailButton.Click += new System.EventHandler(this.showFailButton_Click);
+            // 
             // StartForm
             // 
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.showFailButton);
             this.Controls.Add(this.colorsListBox);
             this.Controls.Add(this.restartGame);
             this.Controls.Add(this.startGame);
@@ -92,6 +104,7 @@
         internal System.Windows.Forms.Button startGame;
         private System.Windows.Forms.Button restartGame;
         private System.Windows.Forms.ListBox colorsListBox;
+        private System.Windows.Forms.Button showFailButton;
     }
 
 }
