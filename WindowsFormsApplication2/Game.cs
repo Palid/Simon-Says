@@ -41,7 +41,7 @@ namespace SimonSays
         readonly bool DEBUG = true;
 
 
-        int currentLevel = 1;
+        public int currentLevel = 1;
 
         int redPos = 0;
         int bluePos = 1;
@@ -65,7 +65,7 @@ namespace SimonSays
 
         private void init()
         {
-            keyboardAnimationTimer.Interval = 20;
+            keyboardAnimationTimer.Interval = 40;
             keyboardAnimationTimer.Elapsed += animationFrame;
             failAnimationTimer.Interval = 125;
             failAnimationTimer.Elapsed += failAnimationFrame;
@@ -294,7 +294,7 @@ namespace SimonSays
             {
                 if (keyboardAnimationTimer.Interval >= 6)
                 {
-                    keyboardAnimationTimer.Interval -= 5;
+                    keyboardAnimationTimer.Interval -= 2.5;
                 }
                 hasFinishedLevel = false;
                 simonSaysKeys.Add(getRandomKey());

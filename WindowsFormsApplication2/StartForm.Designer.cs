@@ -32,6 +32,7 @@
             this.restartGame = new System.Windows.Forms.Button();
             this.colorsListBox = new System.Windows.Forms.ListBox();
             this.showFailButton = new System.Windows.Forms.Button();
+            this.highestLevelLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // startGame
@@ -83,11 +84,22 @@
             this.showFailButton.TabIndex = 3;
             this.showFailButton.Text = "Show Fail";
             this.showFailButton.UseVisualStyleBackColor = true;
+            this.showFailButton.Visible = false;
             this.showFailButton.Click += new System.EventHandler(this.showFailButton_Click);
+            // 
+            // highestLevelLabel
+            // 
+            this.highestLevelLabel.AutoSize = true;
+            this.highestLevelLabel.Location = new System.Drawing.Point(127, 13);
+            this.highestLevelLabel.Name = "highestLevelLabel";
+            this.highestLevelLabel.Size = new System.Drawing.Size(104, 13);
+            this.highestLevelLabel.TabIndex = 4;
+            this.highestLevelLabel.Text = "Your highest level is:";
             // 
             // StartForm
             // 
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.highestLevelLabel);
             this.Controls.Add(this.showFailButton);
             this.Controls.Add(this.colorsListBox);
             this.Controls.Add(this.restartGame);
@@ -96,6 +108,7 @@
             this.Text = "Simon Says";
             this.Load += new System.EventHandler(this.StartForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -105,6 +118,7 @@
         private System.Windows.Forms.Button restartGame;
         private System.Windows.Forms.ListBox colorsListBox;
         private System.Windows.Forms.Button showFailButton;
+        private System.Windows.Forms.Label highestLevelLabel;
     }
 
 }

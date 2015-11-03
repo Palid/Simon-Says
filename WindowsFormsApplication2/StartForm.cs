@@ -72,13 +72,16 @@ namespace SimonSays
                 {
                     _interceptor.StopCapturing();
                     _interceptor.StartCapturing();
+                    highestLevelLabel.Text = "Your highest level is: " + game.currentLevel.ToString();
                     game.destroy();
                     game = new Game(selectedColor);
                     game.start();
                 }
                 else
                 {
+                    highestLevelLabel.Text = "Your highest level is: " + game.currentLevel.ToString();
                     game.destroy();
+                    _interceptor.StopCapturing();
                     _interceptor.StartCapturing();
                     game.start();
                 }
@@ -93,6 +96,7 @@ namespace SimonSays
 
         private void restartGame_Click(object sender, EventArgs e)
         {
+            highestLevelLabel.Text = "Your highest level is: " + game.currentLevel.ToString();
             game.destroy();
             _interceptor.StopCapturing();
             _interceptor.StartCapturing();
@@ -111,5 +115,6 @@ namespace SimonSays
             game = new Game(Corale.Colore.Core.Color.Pink);
             game.showFailure();
         }
+
     }
 }
