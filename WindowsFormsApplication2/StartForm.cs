@@ -72,11 +72,13 @@ namespace SimonSays
                 {
                     _interceptor.StopCapturing();
                     _interceptor.StartCapturing();
+                    game.destroy();
                     game = new Game(selectedColor);
                     game.start();
                 }
                 else
                 {
+                    game.destroy();
                     _interceptor.StartCapturing();
                     game.start();
                 }

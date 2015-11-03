@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Corale.Colore.Razer;
+﻿using System.Collections.Generic;
 using Corale.Colore.Razer.Keyboard;
 using Corale.Colore.Core;
-using System.Timers;
 
 namespace SimonSays
 {
-    class AnimatedKey : IKeyView
+    class AnimatedKey
     {
         public string key { get; set; }
         public Key razerKey { get; private set; }
@@ -55,18 +49,10 @@ namespace SimonSays
 
             return new Color(red / magicNumber, green / magicNumber, blue / magicNumber, alpha);
         }
-        public Corale.Colore.Razer.Keyboard.Effects.Custom getNewEffect()
+        public Color getKeyColor()
         {
             color = getNewColor(color);
-            var currentEffect = Corale.Colore.Razer.Keyboard.Effects.Custom.Create();
-            currentEffect[this.razerKey] = color;
-
-            return currentEffect;
-        }
-
-        public void showKey()
-        {
-            getNewEffect();
+            return color;
         }
     }
 }

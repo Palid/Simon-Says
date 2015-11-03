@@ -77,9 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimatedKey.cs" />
-    <Compile Include="IKeyView.cs" />
-    <Compile Include="KeyValuePair.cs" />
-    <Compile Include="PlayableKeysEnum.cs" />
     <Compile Include="StartForm.cs">
       <SubType>Form</SubType>
     </Compile>

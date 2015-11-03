@@ -6,6 +6,10 @@ using Corale.Colore.Core;
 
 namespace SimonSays
 {
+    enum ScoringKeys
+    {
+        F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12
+    }
     enum UsableKeys
     {
         Q,W,E,R,T,Y,U,I,O,P,
@@ -36,6 +40,9 @@ namespace SimonSays
         readonly int animationCount = 30; //Great shadowing animation for key.
         readonly bool DEBUG = true;
 
+
+        int currentLevel = 1;
+
         int redPos = 0;
         int bluePos = 1;
         int pinkPos = 2;
@@ -58,7 +65,7 @@ namespace SimonSays
 
         private void init()
         {
-            keyboardAnimationTimer.Interval = 80;
+            keyboardAnimationTimer.Interval = 20;
             keyboardAnimationTimer.Elapsed += animationFrame;
             failAnimationTimer.Interval = 125;
             failAnimationTimer.Elapsed += failAnimationFrame;
@@ -70,6 +77,9 @@ namespace SimonSays
                     try
                     {
                         keyboard.Clear();
+                        var effect = Corale.Colore.Razer.Keyboard.Effects.Custom.Create();
+                        scoringFrames(effect);
+                        keyboard.SetCustom(effect);
                     }
                     catch (Exception)
                     {
@@ -77,11 +87,13 @@ namespace SimonSays
                     }
                 } else
                 {
+                    currentLevel++;
                     currentKeyIndex = 0;
                     hasFinishedLevel = false;
                     keyboard.Clear();
                     startNextLevel();
                     animationFramesCount = 0;
+                    Console.WriteLine(currentLevel);
 
                 }
                 votingAnimationTimer.Stop();
@@ -91,8 +103,10 @@ namespace SimonSays
         }
         public void destroy()
         {
-            keyboardAnimationTimer.Stop();
-            votingAnimationTimer.Stop();
+            stopAnimations();
+            resetGameVariables();
+            stopAnimations();
+            keyboard.Clear();
         }
 
         public void start()
@@ -115,7 +129,7 @@ namespace SimonSays
             isStarted = false;
             isFinished = false;
             keyboardAnimationTimer.Interval = 80;
-
+            currentLevel = 1;
         }
 
         private void stopAnimations()
@@ -123,6 +137,7 @@ namespace SimonSays
             keyboardAnimationTimer.Stop();
             failAnimationTimer.Stop();
             votingAnimationTimer.Stop();
+            keyboard.Clear();
         }
 
         private UsableKeys getRandomKey()
@@ -196,6 +211,31 @@ namespace SimonSays
             keyboard.SetGrid(arr);
         }
 
+        private Corale.Colore.Razer.Keyboard.Effects.Custom scoringFrames(Corale.Colore.Razer.Keyboard.Effects.Custom effect)
+        {
+            Array ScoringKeys = Enum.GetValues(typeof(ScoringKeys));
+            int fKeysAmount = currentLevel;
+            for (int i = 12; i > 0; i--)
+            {
+                int possibleKey = fKeysAmount - i;
+                if (possibleKey == 0)
+                {
+                    ScoringKeys Fkey = (ScoringKeys)ScoringKeys.GetValue(i - 1);
+                    Key RazerFKey = (Key)Enum.Parse(typeof(Key), Fkey.ToString().ToUpper());
+                    effect[RazerFKey] = Color.Orange;
+                    break;
+                } else if (possibleKey > 0)
+                {
+                    ScoringKeys Fkey = (ScoringKeys)ScoringKeys.GetValue(i - 1);
+                    Key RazerFKey = (Key)Enum.Parse(typeof(Key), Fkey.ToString().ToUpper());
+                    fKeysAmount = possibleKey;
+                    effect[RazerFKey] = Color.Orange;
+                }
+            }
+            return effect;
+
+        }
+
         private void animationFrame(Object source, ElapsedEventArgs e)
         {
             if (animationFramesCount == this.animationCount)
@@ -212,14 +252,18 @@ namespace SimonSays
                     keyboard.Clear();
                     currentKeyIndex = 0;
                     isVotingTime = true;
-
+                    var effect = Corale.Colore.Razer.Keyboard.Effects.Custom.Create();
+                    scoringFrames(effect);
+                    keyboard.SetCustom(effect);
                 }
             } else
             {
-                var currentEffect = currentKey.getNewEffect();
+                var currentEffect = Corale.Colore.Razer.Keyboard.Effects.Custom.Create();
+                currentEffect[currentKey.razerKey] = currentKey.getKeyColor();
+                var scoredEffect = scoringFrames(currentEffect);
                 try
                 {
-                    keyboard.SetCustom(currentEffect);
+                    keyboard.SetCustom(scoredEffect);
 
                 } catch (Exception)
                 {
@@ -246,9 +290,12 @@ namespace SimonSays
         }
         public void startNextLevel()
         {
-            if (isStarted && !isFinished)
+            if (isStarted && !isFinished && currentLevel != 78)
             {
-                keyboardAnimationTimer.Interval -= 5;
+                if (keyboardAnimationTimer.Interval >= 6)
+                {
+                    keyboardAnimationTimer.Interval -= 5;
+                }
                 hasFinishedLevel = false;
                 simonSaysKeys.Add(getRandomKey());
                 startAnimatingKey();
